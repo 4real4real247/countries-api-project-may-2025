@@ -38,5 +38,5 @@ export default App;
 //         ├── Home.jsx (shows country cards)
 //         │     └── CountryCardList.jsx (maps and renders)
 //         │            └── CountryCard.jsx (one card)
-//         ├── SavedCountries.jsx
+//         ├── SavedCountries.jsx (user form and need to put saved countries here also still need to do)
 //         └── CountryDetail.jsx (not done yet)

@@ -6,9 +6,8 @@ function CountryCardList({ data }) {
 
   return (
     <div className="card-list">
-      {/* Loop through each country and render a CountryCard */}
       {data.map((country) => (
-        <CountryCard key={country.name.common} country={country} />
+        <CountryCard key={country.id || country.name} country={country} />
       ))}
     </div>
   );
