@@ -5,7 +5,8 @@ export default function SavedCountries() {
   // These keep track of what the user types into the form
   const [fullName, setFullName] = useState(""); // for the name input
   const [email, setEmail] = useState(""); // for the email input
-  const [message, setMessage] = useState(""); // for the message input
+  const [countryFrom, setCountryFrom] = useState(""); // for country input
+  const [bio, setBio] = useState(""); // for the message input
 
   // This runs when the user submits the form
   const handleSubmit = (e) => {
@@ -17,18 +18,18 @@ export default function SavedCountries() {
     // After submitting, clear the form fields so it's empty again
     setFullName("");
     setEmail("");
-    setMessage("");
+    setBio("");
+    setCountry("");
   };
 
   return (
     <div className="profile-container">
       <h1 className="profile">My Profile</h1>
 
-      {/* Form with 3 fields: name, email, message */}
+      {/* name, email, message , country from */}
       <form onSubmit={handleSubmit} className="profile-form">
         {/* Full Name input */}
         <div className="form-group">
-          <label>Full Name</label>
           <input
             type="text"
             value={fullName}
@@ -40,7 +41,6 @@ export default function SavedCountries() {
 
         {/* Email input */}
         <div className="form-group">
-          <label>Email</label>
           <input
             type="email"
             value={email}
@@ -50,13 +50,22 @@ export default function SavedCountries() {
           />
         </div>
 
+        <div className="form-group">
+          <input
+            type="text"
+            value={countryFrom}
+            onChange={(e) => setCountryFrom(e.target.value)}
+            placeholder="Country From"
+            required
+          />
+        </div>
+
         {/* Message textarea */}
         <div className="form-group">
-          <label>Message</label>
           <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Tell us something..."
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder="Bio"
             required
           ></textarea>
         </div>
