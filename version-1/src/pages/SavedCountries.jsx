@@ -13,13 +13,13 @@ export default function SavedCountries() {
     e.preventDefault(); // Stop the page from reloading
 
     // Log the form data to the console so we can see it
-    console.log("Profile Submitted:", { fullName, email, message });
+    console.log("Profile Submitted:", { fullName, email, bio, country });
 
     // After submitting, clear the form fields so it's empty again
     setFullName("");
     setEmail("");
     setBio("");
-    setCountry("");
+    setCountryFrom("");
   };
 
   return (
@@ -50,6 +50,7 @@ export default function SavedCountries() {
           />
         </div>
 
+        {/* Country input*/}
         <div className="form-group">
           <input
             type="text"
