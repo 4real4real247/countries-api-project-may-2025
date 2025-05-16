@@ -12,6 +12,10 @@ function App() {
   //   Create a state variable to store country data
   const [countries, setCountries] = useState([]); // Start with an empty list array This will eventually be an array of countries, but right now it starts empty
 
+  //night and day  mode
+  const [darkMode, setDarkMode] = useState(false);
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
   //  Get country data from the Countries API when the app loads
   useEffect(() => {
     //  Try to fetch data from the internet
@@ -43,9 +47,9 @@ function App() {
       });
   }, []); // Run this code once when the app first opens
 
-  //  Set up what the app shows on the screen
+  //  Set up what the app shows on the screen and wrap light and dark mode in the whole app also
   return (
-    <div>
+    <div className={darkMode ? "app dark" : "app light"}>
       {/*  Navigation bar */}
       <header className="header">
         {/*  Link to Home Page */}
@@ -57,6 +61,10 @@ function App() {
         <Link to="/saved" className="saved-link">
           Saved Countries
         </Link>
+        {/*light and dark*/}
+        <button onClick={toggleDarkMode} className="theme-toggle">
+          {darkMode ? "🌞 Light" : "🌙 Dark"}
+        </button>
       </header>
 
       {/*  Show different pages depending on the URL */}

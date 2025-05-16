@@ -179,3 +179,95 @@ textarea {
 .submit-button:hover {
   background-color: #7672ce;
 }
+
+/*dark & light mode  */
+.app.light {
+  --bg: #f5f5f5;
+  --text: #111;
+}
+
+.app.dark {
+  --bg: #1e1e1e;
+  --text: #f5f5f5;
+}
+
+/* Apply the variables */
+.app.light,
+.app.dark {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh; /* full‑height background */
+}
+
+/* Toggle button */
+.theme-toggle {
+  margin-left: 1rem;
+  padding: 0.5rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+/* Theme wrapper */
+.app.light {
+  --bg-color: #ffffff;
+  --text-color: #111517;
+  --element-bg: #f0f0f0;
+  --card-bg: #ffffff;
+  --border-color: #ddd;
+}
+
+.app.dark {
+  --bg-color: #202c36;
+  --text-color: #ffffff;
+  --element-bg: #2b3945;
+  --card-bg: #2b3945;
+  --border-color: #444;
+}
+
+/* Apply global theme variables */
+body,
+.app {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Apply themed backgrounds to cards, headers, etc. */
+.header {
+  background-color: var(--element-bg);
+  color: var(--text-color);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saved-link,
+.logo,
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  margin-left: 1rem;
+}
+
+.theme-toggle {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Example card styling (if you're using cards for countries) */
+.country-card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+  padding: 1rem;
+}
