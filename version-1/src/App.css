@@ -23,7 +23,6 @@ header {
   align-items: center;
   padding: 1rem 2rem;
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header a {
@@ -101,7 +100,7 @@ select {
 /* MEDIA QUERIES */
 @media (min-width: 800px) {
   header {
-    padding: 2rem 4rem;
+    padding: 2rem 10rem;
   }
 
   .logo {
@@ -122,11 +121,14 @@ select {
 /*savedCountries page*/
 .profile-container {
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
+  margin: 4rem;
+  padding: 1rem;
+  background-color: #e6e9ec;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile {
+  font-size: large;
 }
 
 .profile-form {

@@ -1,4 +1,5 @@
-//  STEP 1: Import tools and files we need to build the app
+//  Import tools and files we need to build the app
+
 import { useEffect, useState } from "react"; // React tools to handle data and actions
 import { Routes, Route, Link } from "react-router-dom"; // Tools to switch between pages
 import Home from "./pages/Home"; // Home page component
@@ -8,21 +9,21 @@ import localData from "../localData"; // Local backup country data if API fails
 import "./App.css"; // Styles for the app
 
 function App() {
-  //  STEP 2: Create a state variable to store country data
-  const [countries, setCountries] = useState([]); // Start with an empty list
+  //   Create a state variable to store country data
+  const [countries, setCountries] = useState([]); // Start with an empty list array This will eventually be an array of countries, but right now it starts empty
 
-  //  STEP 3: Get country data from the REST Countries API when the app loads
+  //  Get country data from the Countries API when the app loads
   useEffect(() => {
     //  Try to fetch data from the internet
     fetch("https://restcountries.com/v3.1/all")
       .then((res) => res.json()) // Convert the response to usable data
       .then((data) => {
-        //  Format the data so we only keep what we need
+        //  Format the data so i only keep what i needed to show and have less error and i used ternary operators ?  so that it will show blank if thre is no data avalbiabe
         const formattedData = data.map((country) => ({
           id: country.cca3, // Unique ID for each country
-          name: country.name.common, // Common name of the country (e.g., "France")
+          name: country.name.common, // Common name of the country
           population: country.population.toLocaleString(), // Format number with commas
-          region: country.region, // Continent like "Europe", "Asia", etc.
+          region: country.region, // Continent
           capital: country.capital?.[0] || "N/A", // Use first capital or "N/A"
           flag: country.flags?.svg || "", // Get the flag image or leave blank
         }));
@@ -30,19 +31,19 @@ function App() {
         // Sort countries alphabetically
         formattedData.sort((a, b) => a.name.localeCompare(b.name));
 
-        //  Save the clean data into our state
+        //  this saves the sorted formattedData
         setCountries(formattedData);
       })
       .catch((err) => {
-        //  If there’s a problem (like no internet), use local backup data
+        //  If there’s a problem (like no internet) use local backup and i also sorted it here to
         console.error("Using fallback local data due to error:", err);
         setCountries(
-          [...localData].sort((a, b) => a.name.localeCompare(b.name)) // Sort local data too
+          [...localData].sort((a, b) => a.name.localeCompare(b.name))
         );
       });
   }, []); // Run this code once when the app first opens
 
-  // 📱 STEP 4: Set up what the app shows on the screen
+  //  Set up what the app shows on the screen
   return (
     <div>
       {/*  Navigation bar */}
@@ -76,7 +77,7 @@ function App() {
   );
 }
 
-// 🚀 Make this component available to use in other files
+//  Make this component available to use in other files
 export default App;
 
 //     ├── src/
@@ -101,4 +102,3 @@ export default App;
 //     │   │
 //     │   ├── localData.js
 //     │   │    A static array of fallback countries used if the API fails (offline mode).
-// i did use ai for puesduocoding  and my file structure because it is so very helpful for me to see the file connections and help me to understand my code when i come back to it

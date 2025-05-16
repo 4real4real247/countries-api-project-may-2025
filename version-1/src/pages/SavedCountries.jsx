@@ -22,7 +22,7 @@ export default function SavedCountries() {
 
   return (
     <div className="profile-container">
-      <h1>My Profile</h1>
+      <h1 className="profile">My Profile</h1>
 
       {/* Form with 3 fields: name, email, message */}
       <form onSubmit={handleSubmit} className="profile-form">
