@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // This page lets the user fill out a little profile/contact form
 export default function SavedCountries() {
   // These keep track of what the user types into the form
-  const [fullName, setFullName] = useState(""); // for the name input
-  const [email, setEmail] = useState(""); // for the email input
-  const [countryFrom, setCountryFrom] = useState(""); // for country input
-  const [bio, setBio] = useState(""); // for the message input
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [fullName, setFullName] = useState(
+    () => localStorage.getItem("fullName") || ""
+  );
+  const [email, setEmail] = useState(() => localStorage.getItem("email") || "");
+  const [countryFrom, setCountryFrom] = useState(
+    () => localStorage.getItem("countryFrom") || ""
+  );
+  const [bio, setBio] = useState(() => localStorage.getItem("bio") || "");
 
   // This runs when the user submits the form
   const handleSubmit = (e) => {
