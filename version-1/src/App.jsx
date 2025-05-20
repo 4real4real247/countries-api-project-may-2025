@@ -73,7 +73,7 @@ function App() {
         <Route path="/" element={<Home countries={countries} />} />
 
         {/*  Saved Countries Page */}
-        <Route path="/saved" element={<SavedCountries />} />
+        <Route path="/saved" element={<SavedCountries darkMode={darkMode} />} />
 
         {/*  Country Detail Page - shows info for one selected country */}
         <Route

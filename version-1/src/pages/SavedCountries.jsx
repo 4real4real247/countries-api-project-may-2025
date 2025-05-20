@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // This page lets the user fill out a little profile/contact form
-export default function SavedCountries() {
+export default function SavedCountries({ darkMode }) {
   // These keep track of what the user types into the form
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [fullName, setFullName] = useState(
@@ -28,7 +28,7 @@ export default function SavedCountries() {
   };
 
   return (
-    <div className="profile-container">
+    <div className={`profile-container ${darkMode ? "dark" : "light"}`}>
       <h1 className="profile">My Profile</h1>
 
       {/* name, email, message , country from */}

@@ -17,10 +17,13 @@ function CountryDetail({ countries }) {
   }
 
   return (
-    <div>
-      {/* Display country details */}
+    <div className="country-detail-page">
       <h1>{selectedCountry.name}</h1>
-      <img src={selectedCountry.flag} alt={`${selectedCountry.name} flag`} />
+      <img
+        src={selectedCountry.flag}
+        alt={`${selectedCountry.name} flag`}
+        className="detail-flag"
+      />
       <p>
         <strong>Capital:</strong> {selectedCountry.capital}
       </p>
@@ -33,5 +36,4 @@ function CountryDetail({ countries }) {
     </div>
   );
 }
-
 export default CountryDetail; // Export the component

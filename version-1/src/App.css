@@ -212,3 +212,50 @@ textarea {
     padding: 2rem;
   }
 }
+/* DARK MODE STYLES FOR PROFILE PAGE */
+.profile-container.light {
+  background-color: #e6e9ec;
+  color: #111517;
+}
+
+.profile-container.dark {
+  background-color: var(--element-bg);
+  color: var(--text-color);
+}
+
+.profile-container.dark input,
+.profile-container.dark textarea {
+  background-color: #2b3945;
+  color: #ffffff;
+  border-color: #555;
+}
+
+.profile-container.dark .submit-button {
+  background-color: #4f6dff;
+}
+/* COUNTRY DETAIL PAGE */
+.country-detail-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-size: 0.9rem; /* Smaller text */
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+}
+
+.country-detail-page h1 {
+  font-size: 1.5rem; /* Make title a bit smaller */
+  margin-bottom: 1rem;
+}
+
+.country-detail-page p {
+  margin-bottom: 0.5rem;
+}
+
+.detail-flag {
+  width: 100%;
+  max-width: 320px; /* Smaller flag */
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
