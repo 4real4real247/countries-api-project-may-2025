@@ -1,112 +1,112 @@
-//  Import tools and files we need to build the app
-
-import { useEffect, useState } from "react"; // React tools to handle data and actions
-import { Routes, Route, Link } from "react-router-dom"; // Tools to switch between pages
-import Home from "./pages/Home"; // Home page component
-import SavedCountries from "./pages/SavedCountries"; // Page to show saved countries
-import CountryDetail from "./pages/CountryDetail"; // Page to show details about one country
-import localData from "../localData"; // Local backup country data if API fails
-import "./App.css"; // Styles for the app
+import { useEffect, useState } from "react"; // React hooks for managing state and side effects
+import { Routes, Route, Link } from "react-router-dom"; // React Router components for navigation
+import Home from "./pages/Home"; // Home component for displaying country list
+import SavedCountries from "./pages/SavedCountries"; // SavedCountries component for showing saved countries
+import CountryDetail from "./pages/CountryDetail"; // CountryDetail component to show detailed info about a country
+import localData from "../localData"; // Local backup data to use in case of API failure
+import "./App.css"; // Import styling for the app
 
 function App() {
-  //   Create a state variable to store country data
-  const [countries, setCountries] = useState([]); // Start with an empty list array This will eventually be an array of countries, but right now it starts empty
+  const [countries, setCountries] = useState([]); // State for storing the list of countries, initially empty
+  const [darkMode, setDarkMode] = useState(false); // State for tracking dark mode false = light mode
+  const [isLoading, setIsLoading] = useState(true); // State to show it's loading status (true = loading)
+  const [error, setError] = useState(null); // State for storing any errors, initially null
 
-  //night and day  mode
-  const [darkMode, setDarkMode] = useState(false);
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  // Function to toggle between dark and light mode
+  const toggleDarkMode = () => setDarkMode((prev) => !prev); // Toggle the value of darkMode state
 
-  //  Get country data from the Countries API when the app loads
+  // useEffect hook to run side effects (fetching countries) when the component mounts
   useEffect(() => {
-    //  Try to fetch data from the internet
-    fetch("https://restcountries.com/v3.1/all")
-      .then((res) => res.json()) // Convert the response to usable data
+    setIsLoading(true); // When the component first loads, this line sets the isLoading state to true. It's  that data is being fetched, so the UI can show a loading spinner or message.
+
+    // Start fetching data from the API
+    fetch("https://restcountries.com/v3.1/all") // this sends a request to the API to get a list of all countries the fetch makes the next work responcee
+      //Once the request is completed, it checks if the response from the API is OK
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch countries"); // If the response is not OK, throw an error and it wil go to .catch block later
+        return res.json(); // if its ok data is parsed as json
+      })
       .then((data) => {
-        //  Format the data so i only keep what i needed to show and have less error and i used ternary operators ?  so that it will show blank if thre is no data avalbiabe
+        // This block takes the raw data  and processes each country using .map() and take out only the info asked for
         const formattedData = data.map((country) => ({
-          id: country.cca3, // Unique ID for each country
-          name: country.name.common, // Common name of the country
-          population: country.population.toLocaleString(), // Format number with commas
-          region: country.region, // Continent
-          capital: country.capital?.[0] || "N/A", // Use first capital or "N/A"
-          flag: country.flags?.svg || "", // Get the flag image or leave blank
+          id: country.cca3, // Get country ID (cca3 code)
+          name: country.name.common, // Get country name (common name)
+          population: country.population?.toLocaleString() || "N/A", // Format population or set as 'N/A' if undefined
+          region: country.region || "N/A", // Get region or 'N/A' if undefined
+          capital: country.capital?.[0] || "N/A", // Get capital city or 'N/A' if undefined
+          flag: country.flags?.svg || "", // Get flag URL or empty string if undefined
         }));
 
-        // Sort countries alphabetically
+        // Sort the countries alphabetically based on their name
         formattedData.sort((a, b) => a.name.localeCompare(b.name));
 
-        //  this saves the sorted formattedData
+        // formatteddata after sorted is then set to the countries state, which will update the UI with the country list.
         setCountries(formattedData);
+        setError(null); // Any previous errors are cleared by setting setError(null).
       })
+      //if an error happpens during the fetch  (e.g., network failure, API downtime), then the .catch block gets it .
       .catch((err) => {
-        //  If there’s a problem (like no internet) use local backup and i also sorted it here to
-        console.error("Using fallback local data due to error:", err);
+        console.error("Using local data:", err); // Log the error to the console
+        setError(err.message); //  the error message is stored in the error state
         setCountries(
-          [...localData].sort((a, b) => a.name.localeCompare(b.name))
+          [...localData].sort((a, b) => a.name.localeCompare(b.name)) // In case of failure, it uses localdata  as a fallback. The data is sorted alphabetically before being set to the countries state.
         );
-      });
-  }, []); // Run this code once when the app first opens
+      })
+      .finally(() => setIsLoading(false)); // The .finally() makes sure that, whether the fetch was successful or failed, the isLoading state will be set to false after the process completes.
+  }, []); // Empty  array  only runs once after component mounts
 
-  //  Set up what the app shows on the screen and wrap light and dark mode in the whole app also
   return (
+    // Render the app with different styles based on darkMode state
     <div className={darkMode ? "app dark" : "app light"}>
-      {/*  Navigation bar */}
+      {/* Header with links and theme toggle */}
       <header className="header">
-        {/*  Link to Home Page */}
+        {/* Link to the homepage with the site logo */}
         <Link to="/" className="logo">
           Where in the world?
         </Link>
 
-        {/*  Link to Saved Countries Page */}
+        {/* Link to the Saved Countries page */}
         <Link to="/saved" className="saved-link">
           Saved Countries
         </Link>
-        {/*light and dark*/}
-        <button onClick={toggleDarkMode} className="theme-toggle">
-          {darkMode ? "🌞 Light" : "🌙 Dark"}
+
+        {/* Button to toggle dark mode */}
+        <button
+          onClick={toggleDarkMode} // Toggle dark mode on button click
+          className="theme-toggle" // CSS class for styling the button
+          aria-label="Toggle dark mode" // Accessibility label for the button
+        >
+          {darkMode ? "🌞 Light" : "🌙 Dark"}{" "}
+          {/* Change button text based on darkMode state */}
         </button>
       </header>
 
-      {/*  Show different pages depending on the URL */}
-      <Routes>
-        {/*  Home Page shows all countries */}
-        <Route path="/" element={<Home countries={countries} />} />
+      {/* This part of the code handles the conditional rendering of different UI elements based on the state (isLoading and error).*/}
 
-        {/*  Saved Countries Page */}
-        <Route path="/saved" element={<SavedCountries />} />
-
-        {/*  Country Detail Page - shows info for one selected country */}
-        <Route
-          path="/country-detail/:countryName"
-          element={<CountryDetail countries={countries} />}
-        />
-      </Routes>
+      {isLoading ? (
+        <div className="loading">Loading countries...</div> // Show loading message while fetching data
+      ) : error ? (
+        <div className="error">Error: {error}. Using local backup data.</div> // Show error message if API fetch fails
+      ) : (
+        // If data has loaded, render routes (Home, SavedCountries, CountryDetail)
+        <Routes>
+          {/* Define route for homepage */}
+          <Route path="/" element={<Home countries={countries} />} />
+          {/* Define route for saved countries page */}
+          <Route
+            path="/saved"
+            element={<SavedCountries darkMode={darkMode} />}
+          />
+          {/* Define route for country detail page */}
+          <Route
+            path="/country-detail/:countryName"
+            element={<CountryDetail countries={countries} />}
+          />
+        </Routes>
+      )}
     </div>
   );
 }
 
-//  Make this component available to use in other files
+// Export the App component as the default export
 export default App;
-
-//     ├── src/
-//     │   ├── pages/
-//     │   │   ├── Home.jsx
-//     │   │   │    Shows a list of all countries using cards. Receives country data from App.
-//     │   │   │
-//     │   │   ├── SavedCountries.jsx
-//     │   │   │    Displays a list of user-saved countries. You could use localStorage here.
-//     │   │   │
-//     │   │   └── CountryDetail.jsx
-//     │   │        Shows detailed info about one selected country. Uses the `:countryName` route param.
-//     │   │   └── (still need to do)   Button.jsx -
-//     │   │    need button when clicked will send countryDetail  to savedCountrys  page
-//     |   |
-//     │   ├── components/
-//     │   │   ├── CountryCard.jsx
-//     │   │   │    Reusable card to show a country's flag, name, region, capital, etc.
-//     │   │
-//     │   ├── App.jsx
-//     │   │    Main app logic: fetches data from REST Countries API, sets up routes, and renders pages.
-//     │   │
-//     │   ├── localData.js
-//     │   │    A static array of fallback countries used if the API fails (offline mode).
