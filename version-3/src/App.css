@@ -1,0 +1,264 @@
+/* Import Nunito Sans font */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap");
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0.2rem;
+  box-sizing: border-box;
+}
+
+/* GLOBAL BODY */
+body {
+  font-family: "Nunito Sans", sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* THEME VARIABLES */
+.app.light {
+  --bg-color: #ffffff;
+  --text-color: #111517;
+  --element-bg: #f0f0f0;
+  --card-bg: #ffffff;
+  --border-color: #ddd;
+}
+
+.app.dark {
+  --bg-color: #202c36;
+  --text-color: #ffffff;
+  --element-bg: #2b3945;
+  --card-bg: #2b3945;
+  --border-color: #444;
+}
+
+/* APPLY THEME GLOBALLY */
+body,
+.app {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* HEADER */
+.header {
+  background-color: var(--element-bg);
+  color: var(--text-color);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.saved-link {
+  font-size: 1rem;
+  text-decoration: none;
+  color: var(--text-color);
+  margin-left: 1rem;
+}
+
+/* TOGGLE BUTTON */
+.theme-toggle {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* CARD LIST GRID */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* COUNTRY CARD */
+.country-card,
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.country-card h3 {
+  margin-top: 1em;
+  text-align: center;
+  font-size: xx-large;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card img,
+.card-flag {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card h2,
+.card-name {
+  margin: 1rem 0 0.5rem 1rem;
+  font-size: 1.2rem;
+}
+
+.card p {
+  margin: 0 1rem 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* LINK STYLING */
+a,
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* INPUT FIELDS */
+input,
+select,
+textarea {
+  border: 1px solid #858585;
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000;
+  font-weight: 600;
+  background-color: #fafafa;
+}
+
+/* BUTTON */
+.submit-button {
+  background-color: #7673ce;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "Nunito Sans", sans-serif;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.submit-button:hover {
+  background-color: #7672ce;
+}
+
+/* SAVED COUNTRIES PAGE */
+.profile-container {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 1rem;
+  background-color: #e6e9ec;
+  border-radius: 12px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #111517;
+}
+
+/* RESPONSIVE */
+@media (min-width: 800px) {
+  .header {
+    padding: 2rem 10rem;
+  }
+
+  .logo {
+    font-size: 2rem;
+  }
+
+  .saved-link {
+    font-size: 1.3rem;
+  }
+
+  .card-list {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 2rem;
+  }
+}
+/* DARK MODE STYLES FOR PROFILE PAGE */
+.profile-container.light {
+  background-color: #e6e9ec;
+  color: #111517;
+}
+
+.profile-container.dark {
+  background-color: var(--element-bg);
+  color: var(--text-color);
+}
+
+.profile-container.dark input,
+.profile-container.dark textarea {
+  background-color: #2b3945;
+  color: #ffffff;
+  border-color: #555;
+}
+
+.profile-container.dark .submit-button {
+  background-color: #4f6dff;
+}
+/* COUNTRY DETAIL PAGE */
+.country-detail-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-size: 0.9rem; /* Smaller text */
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+}
+
+.country-detail-page h1 {
+  font-size: 1.5rem; /* Make title a bit smaller */
+  margin-bottom: 1rem;
+}
+
+.country-detail-page p {
+  margin-bottom: 0.5rem;
+}
+
+.detail-flag {
+  width: 100%;
+  max-width: 320px; /* Smaller flag */
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
