@@ -20,7 +20,9 @@ function App() {
     setIsLoading(true); // When the component first loads, this line sets the isLoading state to true. It's  that data is being fetched, so the UI can show a loading spinner or message.
 
     // Start fetching data from the API
-    fetch("https://restcountries.com/v3.1/all") // this sends a request to the API to get a list of all countries the fetch makes the next work responcee
+    fetch(
+      "https://restcountries.com/v3.1/all?fields=name,flags,population,capital,region"
+    ) // this sends a request to the API to get a list of all countries the fetch makes the next work responcee
       //Once the request is completed, it checks if the response from the API is OK
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch countries"); // If the response is not OK, throw an error and it wil go to .catch block later
