@@ -73,12 +73,12 @@ export default function SavedCountries({ darkMode, countries }) {
                 name: country_name,
                 country_name: country_name,
                 flag: "",
-                capital: "N/A",
+                capital: "this is not working ",
                 population: "N/A",
                 region: "N/A",
               };
         });
-
+        //////////////////////////////////////////////////////////
         // View counts (optional, if your backend returns them)
         const counts = data.reduce((acc, { country_name, viewCount }) => {
           if (country_name)

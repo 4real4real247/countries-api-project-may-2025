@@ -99,9 +99,9 @@ body,
   display: flex;
   flex-direction: column;
 }
-.country-card h3 {
+img flag .country-card h3 {
   margin-top: 1em;
-  text-align: center;
+  /*text-align: center;*/
   font-size: xx-large;
 }
 
@@ -158,10 +158,10 @@ textarea {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
   border-radius: 6px;
-  cursor: pointer;
+
   font-weight: bold;
   font-family: "Nunito Sans", sans-serif;
-  transition: background-color 0.3s ease;
+
   width: fit-content;
   align-self: flex-start;
 }
@@ -172,9 +172,9 @@ textarea {
 
 /* SAVED COUNTRIES PAGE */
 .profile-container {
-  max-width: 600px;
+  max-width: 650px;
   margin: 4rem auto;
-  padding: 1rem;
+  padding: 2rem;
   background-color: #e6e9ec;
   border-radius: 12px;
 }
