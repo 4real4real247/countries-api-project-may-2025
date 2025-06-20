@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 function CountryCard({ country }) {
-  const flagUrl = country.flag || "";
-
   return (
     <div className="country-card">
       <Link to={`/country-detail/${country.name}`} className="card-link">

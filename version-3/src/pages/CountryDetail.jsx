@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function CountryDetail({ countries }) {
-  const { countryName } = useParams();
+  const { country_name } = useParams();
 
   const selectedCountry = countries.find(
-    (country) => country.name === countryName
+    (country) => country.name === country_name
   );
 
   const [viewCount, setViewCount] = useState(0);
@@ -42,7 +42,7 @@ function CountryDetail({ countries }) {
       },
       //Send the country name as the data body, turned into a string. You’re sending the country’s name to the server It’s wrapped in an object and turned into a string format so the server can read it.
       body: JSON.stringify({
-        countryName: selectedCountry.name, // Send the country name as required by the backend
+        country_name: selectedCountry.name, // Send the country name as required by the backend
       }),
       //You’re done setting up the message, so now it sends it to the server.
     })
@@ -53,7 +53,8 @@ function CountryDetail({ countries }) {
       })
       //Take the number you got from the server and save it into viewCount.The backend returns an object with the updated count, e.g., { count: 6 }If the server gave back a number (like 6 views), store that number so you can show it in your app.
       .then((data) => {
-        setViewCount(data.count);
+        console.log("View count API response:", data);
+        setViewCount(data.newCount);
       })
       //If something went wrong at any point, show an error and reset viewCount to 0.If anything broke, show an error in the console so you can debug it later. Then, set the view count to 0 just so your app doesn’t crash or stay stuck.
       .catch((err) => {
@@ -63,20 +64,60 @@ function CountryDetail({ countries }) {
     //This whole process only happens when a new country is selected in the app. So every time the user clicks on a different country, this view count update gets triggered.
   }, [selectedCountry]);
 
+  ///////////////////////////////////
+  //REPLACED with  backend
+  // const handleSaveCountry = () => {
+  //   if (!selectedCountry) return;
+
+  //   const existing = JSON.parse(localStorage.getItem("savedCountries")) || [];
+  //   const alreadyExists = existing.some((c) => c.name === selectedCountry.name);
+
+  //   if (!alreadyExists) {
+  //     const updatedList = [...existing, selectedCountry];
+  //     localStorage.setItem("savedCountries", JSON.stringify(updatedList));
+  //     setSaved(true);
+  //   } else {
+  //     setSaved(true); // Optional: still show as saved if already present
+  //   }
+  // };
+  ///////////////////////////////////////////////////////
+
+  //Create a piece of state called saveError. Start with no error (null) so it store and show an error message if saving the country fails
+  const [saveError, setSaveError] = useState(null);
+  //To manage the logic for saving a country to the backend.
   const handleSaveCountry = () => {
-    if (!selectedCountry) return;
-
-    const existing = JSON.parse(localStorage.getItem("savedCountries")) || [];
-    const alreadyExists = existing.some((c) => c.name === selectedCountry.name);
-
-    if (!alreadyExists) {
-      const updatedList = [...existing, selectedCountry];
-      localStorage.setItem("savedCountries", JSON.stringify(updatedList));
-      setSaved(true);
-    } else {
-      setSaved(true); // Optional: still show as saved if already present
-    }
+    //right away mark the country as “saved” in the UI This is an optimistic update—we assume the save will work and show instant feedback to the user.
+    setSaved(true);
+    //Clear out any previous error messages So the user doesn’t see an old error when trying again.
+    setSaveError(null);
+    //////////////////////////////////////////////////////////////////////
+    //This is the API endpoint that saves the country.
+    fetch("/api/save-one-country", {
+      //The backend needs the country ID to know which country to save.
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        country_id: selectedCountry.id,
+      }),
+    })
+      // Wait for the backend’s response To check if saving worked or failed.
+      .then((res) => {
+        //If the server didn’t respond with a success code, throw an error.  only want to continue if the save actually worked
+        if (!res.ok) throw new Error("Save failed");
+        console.log("Save successful for ID:", selectedCountry.id);
+        //Redirect the user to view their saved countries right after saving.
+      })
+      //If any error happened above, this part runs.
+      .catch((err) => {
+        //For debugging and to understand what went wrong.
+        console.error("Save error:", err);
+        // Undo the optimistic update if the save failed. dont want it show saved unless they saved it
+        setSaved(false);
+        //Show a message to the user that something went wrong.
+        setSaveError("Failed to save. Please try again.");
+      });
   };
+  ///////////////////added backend for saved county/////////////////////
 
   if (!selectedCountry) {
     return <div>Country not found.</div>;
@@ -102,12 +143,14 @@ function CountryDetail({ countries }) {
         <strong>Region:</strong> {selectedCountry.region}
       </p>
       <p>
-        <strong>Viewed:</strong> {viewCount}{" "}
+        <strong>Viewed:</strong> {typeof viewCount === "number" ? viewCount : 0}{" "}
         {viewCount === 1 ? "time" : "times"}
       </p>
+
       <button onClick={handleSaveCountry} className="save-button">
         {saved ? "Country Saved!" : "Save Country"}
       </button>
+      {saveError && <div className="error">{saveError}</div>}
     </div>
   );
 }

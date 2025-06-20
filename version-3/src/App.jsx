@@ -101,7 +101,7 @@ function App() {
           />
           {/* Define route for country detail page */}
           <Route
-            path="/country-detail/:countryName"
+            path="/country-detail/:country_name"
             element={<CountryDetail countries={countries} />}
           />
         </Routes>
