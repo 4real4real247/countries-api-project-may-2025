@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function SavedCountries({ darkMode, countries }) {
-  // This stores user input from the profile form.
+  // This stores user input from the profile form.Track user input so we can personalize their experience
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -18,39 +18,50 @@ export default function SavedCountries({ darkMode, countries }) {
   // Tracks how many times each country was viewed.
   const [viewCounts, setViewCounts] = useState({});
 
-  // Allows us to know when the URL changes. Useful to reload data when route changes.
+  // Detect route changes — useful when a user navigates and we need to reload fresh data
   const location = useLocation();
 
   // Makes a GET request to fetch the latest user.
   // If successful, fills out the form with the fetched data.
   // If user has a name, sets formSubmitted to true (shows welcome instead of form).
+
+  ////////////GETTING USER INFO FROM BACKEND//////////////
   useEffect(() => {
     async function loadUser() {
       try {
+        //Get the newest user profile (only once, when page loads)
         const res = await fetch("/api/get-newest-user");
+        //Stop if request failed
         if (!res.ok) throw new Error(res.statusText);
+        //Convert backend response into usable format
         const data = await res.json();
+        //Pick the first user (or empty profile if none)
         const user = data[0] ?? {};
+
+        //Set the profile form fields using the returned data
         setFormData({
           fullName: user.name ?? "",
           email: user.email ?? "",
           countryFrom: user.country_name ?? "",
           bio: user.bio ?? "",
         });
+
+        //If user has a name, hide the form and show "Welcome"
         setFormSubmitted(Boolean(user.name));
       } catch (err) {
+        //Log the error for debugging
         console.error("Error loading newest user:", err);
       }
     }
-    loadUser();
+    loadUser(); //Kick it off it loads
+    //Run only on page load — this doesn't track updates
   }, []);
 
-  // Load saved countries and view counts from backend API on mount and when route changes.
-  // For each saved country, look up the full data from the frontend countries array.
+  /////////SAVED COUNTRIES WHEN DATA OR PAGE CHANGE///////////
   useEffect(() => {
     async function loadSaved() {
       try {
-        const res = await fetch("/api/get-all-saved-countries");
+        const res = await fetch("/api/get-all-saved-countries"); //Ask backend for all saved countries
         const data = await res.json();
         console.log("Saved countries from backend:", data);
 
@@ -63,12 +74,14 @@ export default function SavedCountries({ darkMode, countries }) {
           const found =
             countriesArray?.find((c) => c.name === country_name) ?? null;
 
+          //Build a full card with display info
           return found
             ? {
                 ...found,
-                id: found.id || country_name,
+                id: found.id || country_name, //Ensure it has an ID for rendering
               }
             : {
+                //If not found, create a backup card with placeholders
                 id: country_name || Math.random(),
                 name: country_name,
                 country_name: country_name,
@@ -78,37 +91,40 @@ export default function SavedCountries({ darkMode, countries }) {
                 region: "N/A",
               };
         });
-        //////////////////////////////////////////////////////////
-        // View counts (optional, if your backend returns them)
+
+        // Build a count object showing how many times each saved country was viewed
         const counts = data.reduce((acc, { country_name, viewCount }) => {
           if (country_name)
             acc[country_name] = typeof viewCount === "number" ? viewCount : 0;
           return acc;
         }, {});
 
+        //Save both the detailed list and view counts in state
         setSavedCountries(savedCountriesWithDetails);
         setViewCounts(counts);
-        console.log("Saved countries with details:", savedCountriesWithDetails);
-        console.log("Mapped viewCounts:", counts);
+        // console.log("Saved countries with details:", savedCountriesWithDetails);
+        // console.log("Mapped viewCounts:", counts);
       } catch (err) {
         console.error("Error loading saved countries", err);
       }
     }
-    loadSaved();
-  }, [location, countries]);
+    loadSaved(); //Run the fetch logic
+  }, [location, countries]); //Runs again if location or full countries list changes
 
-  // Debug and see state changes in console
+  // Log data changes to help with debugging and see what’s stored
   useEffect(() => {
     console.log("SavedCountries state:", savedCountries);
     console.log("ViewCounts state:", viewCounts);
   }, [savedCountries, viewCounts]);
 
-  // Handlers
-  // Shows the form again when “Edit Profile” is clicked.
+  //////////HANDLERS TO EDIT, TYPE, AND SUBMIT FORM//////////
+
+  //Bring back the form when editing
   const handleEditProfile = () => setFormSubmitted(false);
 
   // When a user types in the form, it updates the formData state.
   const handleChange = (e) => {
+    //Update a single part of the form when the user types
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -205,7 +221,7 @@ export default function SavedCountries({ darkMode, countries }) {
         </form>
       )}
 
-      {/* Saved countries section */}
+      {/* Saved countries section Now display the user’s saved countries, if any */}
       <div className="saved-countries">
         <h2>Saved Countries</h2>
         {savedCountries.length === 0 ? (
