@@ -63,7 +63,7 @@ function useSaveCountry() {
   const [error, setError] = useState(null);
 
   // Define the save function and memoize it with useCallback
-  const save = useCallback(async (countryId) => {
+  const save = useCallback(async (countryName) => {
     setLoading(true); // Show loading UI
     setError(null); // Clear past errors
     setSaved(false); //// Reset saved status
@@ -73,7 +73,7 @@ function useSaveCountry() {
       const res = await fetch("/api/save-one-country", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ country_id: countryId }),
+        body: JSON.stringify({ country_name: countryName }),
       });
 
       // If the request fails, throw an error
