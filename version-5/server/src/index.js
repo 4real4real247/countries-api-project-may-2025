@@ -5,11 +5,10 @@ BOILERPLATE CODE TO SET UP SERVER
 import express from "express";
 // Load pg module to connect with the PostgreSQL database
 import pg from "pg";
-// Load configuration values (like database credentials) from an external file
-import config from "./config.js";
+
 // Create a connection pool to the PostgreSQL database using credentials from config
 const db = new pg.Pool({
-  connectionString: config.databaseUrl, // The address and password for the database
+  connectionString: process.env.DATABASE_URL, // The address and password for the database
   ssl: true, // Use secure encrypted connection
 });
 // Initialize an Express application (your web server)
